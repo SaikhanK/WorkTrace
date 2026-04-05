@@ -1,16 +1,12 @@
-# ─── Angular Dev Dockerfile ──────────────────────────────────────────────────
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Abhängigkeiten zuerst kopieren (besseres Layer-Caching)
 COPY package*.json ./
 
 RUN npm install
 
-# Quellcode wird per Volume gemountet (kein COPY nötig für Dev)
 
 EXPOSE 4200
 
-# Angular CLI Dev Server mit Host-Binding für Docker
 CMD ["npm", "run", "start"]

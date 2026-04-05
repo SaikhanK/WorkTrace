@@ -7,7 +7,21 @@ export class LlmService {
 
     constructor() {
         this.groq = new Groq({
-            apiKey: process.env.LLM_API_KEY,
+            apiKey: '',
         });
+    }
+
+    async chat(prompt: string) {
+        const response = await this.groq.chat.completions.create({
+            model: "llama-3.1-8b-instant",
+            messages: [
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
+        });
+
+        return response.choices[0].message.content;
     }
 }

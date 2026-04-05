@@ -1,15 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { firstValueFrom } from "rxjs";
 import { HttpService } from '@nestjs/axios';
+import { LlmService } from "src/services/llm.service";
 
 @Injectable()
 export class HomeService {
-    constructor(private readonly httpService: HttpService) { }
+    constructor(private readonly httpService: HttpService, private llmService: LlmService) { }
     async getTest(name: string): Promise<any> {
         const response = await firstValueFrom(
             this.httpService.get(`https://api.github.com/users/${name}/repos`)
         );
-        console.log(response)
-        return response.data
+        const test = this.llmService.chat("wie gehts")
+        return test
     }
 }

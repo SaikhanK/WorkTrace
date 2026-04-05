@@ -1,18 +1,15 @@
-# ─── NestJS Dev Dockerfile ───────────────────────────────────────────────────
+
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Abhängigkeiten zuerst kopieren (besseres Layer-Caching)
 COPY package*.json ./
 
 RUN npm install
 
-# Quellcode wird per Volume gemountet (kein COPY nötig für Dev)
 
 EXPOSE 3000
-# Node.js Debugger Port
+
 EXPOSE 9229
 
-# Hot Reload via NestJS CLI watch mode + Debugger
 CMD ["npm", "run", "start:dev"]
