@@ -1,16 +1,23 @@
 import { Injectable } from "@nestjs/common";
-import { firstValueFrom } from "rxjs";
-import { HttpService } from '@nestjs/axios';
 import { LlmService } from "src/services/llm.service";
+import { buildReportPrompt } from "src/services/github-report-prompt.builder";
+import { GithubProfileService } from "src/services/github-profile.service";
 
 @Injectable()
 export class HomeService {
-    constructor(private readonly httpService: HttpService, private llmService: LlmService) { }
-    async getTest(name: string): Promise<any> {
-        const response = await firstValueFrom(
-            this.httpService.get(`https://api.github.com/users/${name}/repos`)
-        );
-        const test = this.llmService.chat("wie gehts")
-        return test
+    constructor(
+        private readonly githubProfileService: GithubProfileService,
+        private readonly llmService: LlmService,
+    ) { }
+
+    async getGithubReport(username: string): Promise<{ report: string; username: string }> {
+        const githubData = await this.githubProfileService.fetchProfileData(username);
+        const prompt = buildReportPrompt(githubData);
+        const report = await this.llmService.chat(prompt);
+
+        return {
+            username,
+            report: report ?? "Kein Bericht generiert.",
+        };
     }
 }

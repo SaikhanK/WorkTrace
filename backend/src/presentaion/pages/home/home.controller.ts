@@ -4,8 +4,9 @@ import { HomeService } from "./home.service";
 @Controller('api/home')
 export class HomeController {
     constructor(private readonly homeService: HomeService) { }
+
     @Get()
-    getTest(@Query('name') name: string): any {
-        return this.homeService.getTest(name)
+    getGithubReport(@Query('username') username: string): any {
+        return this.homeService.getGithubReport(username);
     }
 }
