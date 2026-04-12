@@ -1,0 +1,506 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+// ── Variables ──────────────────────────────────────────────────────────────
+:root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface-2: #18181f;
+    --border: #2a2a38;
+    --border-bright: #3d3d52;
+    --accent: #00e5a0;
+    --accent-dim: rgba(0, 229, 160, 0.12);
+    --accent-glow: rgba(0, 229, 160, 0.35);
+    --text: #e8e8f0;
+    --text-muted: #6b6b82;
+    --text-dim: #3a3a50;
+    --error: #ff4f6a;
+    --error-dim: rgba(255, 79, 106, 0.12);
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --radius: 4px;
+    --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// ── Reset & Base ──────────────────────────────────────────────────────────
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+// ── Shell ─────────────────────────────────────────────────────────────────
+.shell {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-display);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 24px 48px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+// ── Grid background ───────────────────────────────────────────────────────
+.grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--text-dim) 1px, transparent 1px),
+        linear-gradient(90deg, var(--text-dim) 1px, transparent 1px);
+    background-size: 48px 48px;
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────
+.header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 56px 0 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    color: var(--accent);
+    font-size: 22px;
+    line-height: 1;
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 4px var(--accent-glow));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 10px var(--accent-glow));
+    }
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+}
+
+.tagline {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────
+.main {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+// ── Search Card ───────────────────────────────────────────────────────────
+.search-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 40px;
+    transition: padding var(--transition);
+
+    &.card--shrink {
+        padding: 24px 40px;
+
+        .card-title,
+        .card-sub {
+            display: none;
+        }
+    }
+}
+
+.card-title {
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 12px;
+
+    em {
+        font-style: normal;
+        color: var(--accent);
+    }
+}
+
+.card-sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+}
+
+.input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    transition: border-color var(--transition);
+
+    &:focus-within {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+}
+
+.input-prefix {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    padding: 0 8px 0 16px;
+    white-space: nowrap;
+    user-select: none;
+}
+
+.username-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 15px;
+    padding: 14px 16px 14px 0;
+
+    &::placeholder {
+        color: var(--text-dim);
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.btn-analyze {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0 28px;
+    transition: background var(--transition), opacity var(--transition);
+    min-width: 140px;
+
+    &:hover:not(:disabled) {
+        background: #00ffb2;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+}
+
+// ── Spinner dots ──────────────────────────────────────────────────────────
+.spinner-text {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dot {
+    animation: blink 1.2s infinite;
+    font-size: 20px;
+    line-height: 1;
+
+    &:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    80%,
+    100% {
+        opacity: 0.2;
+    }
+
+    40% {
+        opacity: 1;
+    }
+}
+
+// ── Loading Panel ─────────────────────────────────────────────────────────
+.loading-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fade-in 0.3s ease;
+}
+
+.loading-bar {
+    height: 2px;
+    background: var(--border);
+    overflow: hidden;
+}
+
+.loading-fill {
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    width: 50%;
+    animation: scan 1.4s ease-in-out infinite;
+}
+
+@keyframes scan {
+    0% {
+        transform: translateX(-200%);
+    }
+
+    100% {
+        transform: translateX(400%);
+    }
+}
+
+.loading-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+// ── Error Panel ───────────────────────────────────────────────────────────
+.error-panel {
+    background: var(--error-dim);
+    border: 1px solid var(--error);
+    padding: 32px 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    animation: fade-in 0.3s ease;
+}
+
+.error-icon {
+    font-size: 20px;
+    color: var(--error);
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.error-msg {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--error);
+}
+
+// ── Report Panel ──────────────────────────────────────────────────────────
+.report-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.report-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.report-username {
+    font-family: var(--font-mono);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.report-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+}
+
+.report-body {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    padding: 32px;
+}
+
+// corner decorations
+.report-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: var(--accent);
+    border-style: solid;
+
+    &.tl {
+        top: -1px;
+        left: -1px;
+        border-width: 2px 0 0 2px;
+    }
+
+    &.tr {
+        top: -1px;
+        right: -1px;
+        border-width: 2px 2px 0 0;
+    }
+
+    &.bl {
+        bottom: -1px;
+        left: -1px;
+        border-width: 0 0 2px 2px;
+    }
+
+    &.br {
+        bottom: -1px;
+        right: -1px;
+        border-width: 0 2px 2px 0;
+    }
+}
+
+.report-text {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+// ── Ghost button ──────────────────────────────────────────────────────────
+.btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    transition: border-color var(--transition), color var(--transition);
+
+    &:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+    }
+
+    &.btn-small {
+        padding: 6px 16px;
+    }
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────
+.footer {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    padding-top: 48px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+}
+
+// ── Animations ────────────────────────────────────────────────────────────
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────
+@media (max-width: 560px) {
+    .search-card {
+        padding: 28px 20px;
+    }
+
+    .input-row {
+        flex-direction: column;
+    }
+
+    .btn-analyze {
+        padding: 14px;
+    }
+
+    .report-body {
+        padding: 20px;
+    }
+
+    .error-panel {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

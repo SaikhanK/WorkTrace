@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { ReportComponent } from './report/report.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  imports: [ReportComponent],
+  template: `<app-report />`,
 })
-export class AppComponent {
-  title = 'work-trace';
-}
+export class AppComponent { }

@@ -1,0 +1,78 @@
+<div class="shell">
+
+    <!-- Background grid -->
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon">⬡</span>
+            <span class="logo-text">DevScan</span>
+        </div>
+        <p class="tagline">GitHub Profil-Analyse für Recruiter</p>
+    </header>
+
+    <!-- Search Panel -->
+    <main class="main">
+        <section class="search-card" [ngClass]="{ 'card--shrink': state() === 'success' }">
+            <h1 class="card-title">Freelancer<br /><em>bewerten.</em></h1>
+            <p class="card-sub">GitHub-Nutzername eingeben und KI-Report generieren.</p>
+
+            <div class="input-row">
+                <div class="input-wrap">
+                    <span class="input-prefix">github.com /</span>
+                    <input class="username-input" type="text" [(ngModel)]="username" (keydown)="onKeydown($event)"
+                        placeholder="username" [disabled]="state() === 'loading'" autocomplete="off"
+                        spellcheck="false" />
+                </div>
+                <button class="btn-analyze" (click)="fetchReport()"
+                    [disabled]="state() === 'loading' || !username.trim()">
+                    <span *ngIf="state() !== 'loading'">Analysieren</span>
+                    <span *ngIf="state() === 'loading'" class="spinner-text">
+                        <span class="dot">·</span><span class="dot">·</span><span class="dot">·</span>
+                    </span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading state -->
+        <section class="loading-panel" *ngIf="state() === 'loading'">
+            <div class="loading-bar">
+                <div class="loading-fill"></div>
+            </div>
+            <p class="loading-label">GitHub-Daten werden abgerufen und analysiert…</p>
+        </section>
+
+        <!-- Error state -->
+        <section class="error-panel" *ngIf="state() === 'error'">
+            <div class="error-icon">✕</div>
+            <p class="error-msg">{{ errorMessage() }}</p>
+            <button class="btn-ghost" (click)="reset()">Zurücksetzen</button>
+        </section>
+
+        <!-- Report state -->
+        <section class="report-panel" *ngIf="state() === 'success'">
+            <div class="report-header">
+                <div class="report-badge">
+                    <a [href]="'https://github.com/' + reportedUser()" target="_blank" rel="noopener"
+                        class="report-username">{{ '@' + reportedUser() }}</a>
+                    <span class="report-label">Assessment Report</span>
+                </div>
+                <button class="btn-ghost btn-small" (click)="reset()">Neue Suche</button>
+            </div>
+
+            <div class="report-body">
+                <div class="report-corner tl"></div>
+                <div class="report-corner tr"></div>
+                <div class="report-corner bl"></div>
+                <div class="report-corner br"></div>
+                <pre class="report-text">{{ report() }}</pre>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <span>Powered by GitHub API &amp; LLM</span>
+    </footer>
+</div>
